@@ -1,81 +1,28 @@
+import { Category } from '@/models/categories';
+import { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-const PRODUCTS = [
-  {
-    id: 1,
-    name: 'Alu',
-    image:
-      'https://images.pexels.com/photos/144248/potatoes-vegetables-erdfrucht-bio-144248.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    price: 60,
-  },
-  {
-    id: 2,
-    name: 'Roshun',
-    image:
-      'https://images.pexels.com/photos/928251/pexels-photo-928251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    price: 250,
-  },
-  {
-    id: 3,
-    name: 'Peyaj',
-    image:
-      'https://images.pexels.com/photos/7129153/pexels-photo-7129153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    price: 100,
-  },
-  {
-    id: 4,
-    name: 'Dim',
-    image:
-      'https://images.pexels.com/photos/162712/egg-white-food-protein-162712.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    price: 55,
-  },
-  {
-    id: 5,
-    name: 'Golda Chingri',
-    image:
-      'https://images.pexels.com/photos/725992/pexels-photo-725992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    price: 900,
-  },
-];
-
-const CATEGORIES = [
-  {
-    id: 1,
-    name: 'Vegetables',
-    image:
-      'https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 2,
-    name: 'Dairy',
-    image:
-      'https://images.pexels.com/photos/1435706/pexels-photo-1435706.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 3,
-    name: 'Meat',
-    image:
-      'https://images.pexels.com/photos/128401/pexels-photo-128401.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 4,
-    name: 'Fish',
-    image:
-      'https://images.pexels.com/photos/19311538/pexels-photo-19311538/free-photo-of-pile-of-fresh-fish.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-  {
-    id: 5,
-    name: 'Snacks',
-    image:
-      'https://images.pexels.com/photos/1893555/pexels-photo-1893555.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-];
+const BASE_URL = 'http://localhost:5000/api';
 
 export default function HomeScreen() {
+  const [CATEGORIES, setCATEGORIES] = useState<Category[]>([]);
+  const [PRODUCTS, setPRODUCTS] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/categories`).then(async (res) => {
+      const categories = await res.json();
+      setCATEGORIES(categories);
+    });
+
+    fetch(`${BASE_URL}/products`).then(async (res) => {
+      const products = await res.json();
+      setPRODUCTS(products);
+    });
+  }, []);
+
   return (
     <ScrollView>
-      {/* Header */}
       <View
         style={{
           padding: 16,
