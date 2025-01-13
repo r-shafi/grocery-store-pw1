@@ -74,7 +74,7 @@ const CATEGORIES = [
 
 export default function HomeScreen() {
   return (
-    <>
+    <ScrollView>
       {/* Header */}
       <View
         style={{
@@ -267,6 +267,6 @@ export default function HomeScreen() {
           style={{ height: 16, width: 16 }}
         />
       </View>
-    </>
+    </ScrollView>
   );
 }
