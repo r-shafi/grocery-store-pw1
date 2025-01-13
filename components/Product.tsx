@@ -37,11 +37,11 @@ const Product = ({ product }: { product: Product }) => {
             padding: 8,
             color: 'white',
             fontSize: 16,
-            backgroundColor: '#0005',
+            backgroundColor: '#00000075',
             width: '100%',
           }}
         >
-          {product.name} - ${product.price}
+          {product.name} - ৳{product.price}
         </Text>
       </View>
     </TouchableOpacity>
