@@ -1,7 +1,9 @@
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import Product from '@/components/Product';
 import { Category } from '@/models/categories';
 import { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 
 const BASE_URL = 'http://localhost:5000/api';
 
@@ -23,41 +25,8 @@ export default function HomeScreen() {
 
   return (
     <ScrollView>
-      <View
-        style={{
-          padding: 16,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: '#BC3131',
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 30,
-            fontWeight: 'bold',
-            color: 'white',
-          }}
-        >
-          Store
-        </Text>
-        <TextInput
-          style={{
-            borderWidth: 1,
-            borderColor: 'white',
-            backgroundColor: '#fff2',
-            maxWidth: 250,
-            height: 30,
-            borderRadius: 10,
-            color: 'white',
-            paddingLeft: 8,
-          }}
-          placeholder="Search..."
-        />
-      </View>
+      <Header />
 
-      {/* Welcome Banner */}
       <View
         style={{
           position: 'relative',
@@ -92,16 +61,13 @@ export default function HomeScreen() {
         </Text>
       </View>
 
-      {/* Available Categories */}
       <View
         style={{
           marginVertical: 32,
           marginHorizontal: 16,
         }}
       >
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-          Available Categories
-        </Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Categories</Text>
 
         <ScrollView
           horizontal={true}
@@ -118,7 +84,11 @@ export default function HomeScreen() {
               }}
             >
               <Image
-                source={{ uri: category.image }}
+                source={{
+                  uri:
+                    category.image ||
+                    'https://blocks.astratic.com/img/general-img-portrait.png',
+                }}
                 style={{
                   width: 100,
                   height: 100,
@@ -127,6 +97,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   textAlign: 'center',
+                  paddingTop: 10,
                 }}
               >
                 {category.name}
@@ -136,7 +107,6 @@ export default function HomeScreen() {
         </ScrollView>
       </View>
 
-      {/* Trending Products */}
       <View
         style={{
           marginVertical: 32,
@@ -154,66 +124,12 @@ export default function HomeScreen() {
           }}
         >
           {PRODUCTS.map((product, i) => (
-            <View
-              key={i}
-              style={{
-                backgroundColor: '#3333',
-                width: 150,
-                height: 200,
-                marginHorizontal: 8,
-                position: 'relative',
-              }}
-            >
-              <Image
-                source={{ uri: product.image }}
-                style={{
-                  width: 150,
-                  height: 200,
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                }}
-              />
-              <Text
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  padding: 8,
-                  color: 'white',
-                  fontSize: 16,
-                  backgroundColor: '#0005',
-                  width: '100%',
-                }}
-              >
-                {product.name} - ${product.price}
-              </Text>
-            </View>
+            <Product key={i} product={product} />
           ))}
         </ScrollView>
       </View>
 
-      {/* Footer */}
-      <View
-        style={{
-          backgroundColor: '#BC3131',
-          padding: 16,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 16,
-        }}
-      >
-        <Image
-          source={{ uri: '/assets/images/facebook.png' }}
-          style={{ height: 16, width: 16 }}
-        />{' '}
-        <Image
-          source={{ uri: '/assets/images/twitter.png' }}
-          style={{ height: 16, width: 16 }}
-        />
-      </View>
+      <Footer />
     </ScrollView>
   );
 }
