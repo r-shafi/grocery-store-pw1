@@ -12,14 +12,14 @@ const Search = () => {
   useEffect(() => {
     const url = new URL(window.location.href);
     const query = url.searchParams.get('query');
-    setQuery(query || '');
+    query && setQuery(query);
 
     fetch(`${BASE_URL}/search?query=${query}`)
       .then((res) => res.json())
       .then(setProducts);
 
     return () => {};
-  }, []);
+  }, [new URL(window.location.href)]);
 
   return (
     <ScrollView>
