@@ -5,7 +5,7 @@ const Product = ({ product }: { product: Product }) => {
   const navigation = useNavigation();
 
   const navigate = () => {
-    navigation.navigate('product', { product_id: product.id });
+    navigation.navigate('product', { query: product.id });
   };
 
   return (
