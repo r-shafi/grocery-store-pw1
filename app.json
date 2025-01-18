@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "store",
-    "slug": "store",
+    "name": "Grocery Store",
+    "slug": "grocery-store",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icons/logo.svg",
+    "icon": "./assets/icons/logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/icons/logo.svg",
+      "image": "./assets/icons/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,14 +17,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icons/logo.svg",
+        "foregroundImage": "./assets/icons/logo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/icons/logo.svg"
+      "favicon": "./assets/icons/logo.png"
     },
     "plugins": ["expo-router"],
     "experiments": {
