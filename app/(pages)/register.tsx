@@ -29,10 +29,9 @@ const RegisterScreen = () => {
     if (!emailRegex.test(email)) {
       return 'Invalid email format.';
     }
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      return 'Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character.';
+
+    if (!password || password.length < 8) {
+      return 'Password must be at least 8 characters long.';
     }
     return null;
   };
