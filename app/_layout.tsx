@@ -1,4 +1,4 @@
-import { Href, Link, Slot, usePathname } from 'expo-router';
+import { Link, Slot, usePathname } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import {
   Animated,
@@ -13,18 +13,8 @@ import {
 const DRAWER_WIDTH = 280;
 const SWIPE_THRESHOLD = 50;
 
-import { Home, Menu, User } from 'lucide-react';
-
-type NavItem = {
-  label: string;
-  path: Href<string>;
-  icon?: React.ReactNode;
-};
-
-const NAVIGATION: NavItem[] = [
-  { label: 'Home', path: '/', icon: <Home size={20} /> },
-  { label: 'Product', path: '/(pages)/product', icon: <User size={20} /> },
-];
+import { ROUTES } from '@/constants/routes';
+import { Menu } from 'lucide-react';
 
 export default function RootLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -87,21 +77,21 @@ export default function RootLayout() {
           <Text style={styles.drawerTitle}>Navigation</Text>
 
           <View style={styles.navLinks}>
-            {NAVIGATION.map((item) => {
-              const isActive = usePathname() === item.path;
+            {ROUTES.map((route) => {
+              const isActive = usePathname() === route.path;
               return (
-                <Link href={item.path} key={item.label}>
+                <Link href={route.path} key={route.label}>
                   <TouchableOpacity
                     style={[styles.navItem, isActive && styles.navItemActive]}
                   >
-                    {item.icon}
+                    {route.icon}
                     <Text
                       style={[
                         styles.navLabel,
                         isActive && styles.navLabelActive,
                       ]}
                     >
-                      {item.label}
+                      {route.label}
                     </Text>
                   </TouchableOpacity>
                 </Link>

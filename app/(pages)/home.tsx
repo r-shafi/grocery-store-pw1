@@ -1,15 +1,14 @@
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
 import Product from '@/components/Product';
-import { Category } from '@/models/categories';
+import { CategoryInterface } from '@/models/categories';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const BASE_URL = 'http://localhost:5000/api';
 
 export default function HomeScreen() {
-  const [CATEGORIES, setCATEGORIES] = useState<Category[]>([]);
-  const [PRODUCTS, setPRODUCTS] = useState<Product[]>([]);
+  const [CATEGORIES, setCATEGORIES] = useState<CategoryInterface[]>([]);
+  const [PRODUCTS, setPRODUCTS] = useState<ProductInterface[]>([]);
 
   useEffect(() => {
     fetch(`${BASE_URL}/categories`).then(async (res) => {
@@ -23,10 +22,18 @@ export default function HomeScreen() {
     });
   }, []);
 
+  const handleCategoryPress = (category: CategoryInterface) => {
+    router.push({
+      pathname: `/category/${category.id}` as any,
+      params: {
+        categoryName: category.name,
+        categoryImage: category.image,
+      },
+    });
+  };
+
   return (
     <ScrollView>
-      <Header />
-
       <View
         style={{
           position: 'relative',
@@ -76,29 +83,33 @@ export default function HomeScreen() {
           }}
         >
           {CATEGORIES.map((category, i) => (
-            <View
-              key={i}
-              style={{
-                width: 100,
-                marginHorizontal: 8,
-              }}
+            <TouchableOpacity
+              key={category.id}
+              onPress={() => handleCategoryPress(category)}
             >
-              <Image
-                source={{ uri: category.image }}
+              <View
                 style={{
                   width: 100,
-                  height: 100,
-                }}
-              />
-              <Text
-                style={{
-                  textAlign: 'center',
-                  paddingTop: 10,
+                  marginHorizontal: 8,
                 }}
               >
-                {category.name}
-              </Text>
-            </View>
+                <Image
+                  source={{ uri: category.image }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                  }}
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    paddingTop: 10,
+                  }}
+                >
+                  {category.name}
+                </Text>
+              </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
@@ -124,8 +135,6 @@ export default function HomeScreen() {
           ))}
         </ScrollView>
       </View>
-
-      <Footer />
     </ScrollView>
   );
 }

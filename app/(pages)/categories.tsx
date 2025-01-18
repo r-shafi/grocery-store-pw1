@@ -1,3 +1,4 @@
+import { CategoryInterface } from '@/models/categories';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -11,29 +12,10 @@ import {
   View,
 } from 'react-native';
 
-interface Category {
-  id: number;
-  name: string;
-  image: string;
-}
-
-interface ProductInterface {
-  id: number;
-  name: string;
-  image: string;
-  price: number;
-  quantity: number;
-  unit: string;
-  description: string;
-  category_id: number;
-  created_at: string;
-  updated_at: string;
-}
-
 const BASE_URL = 'http://localhost:5000/api';
 
 export default function CategoriesScreen() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -58,7 +40,7 @@ export default function CategoriesScreen() {
     }
   };
 
-  const handleCategoryPress = (category: Category) => {
+  const handleCategoryPress = (category: CategoryInterface) => {
     router.push({
       pathname: `/category/${category.id}` as any,
       params: {

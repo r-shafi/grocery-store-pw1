@@ -11,19 +11,6 @@ import {
   View,
 } from 'react-native';
 
-interface ProductInterface {
-  id: number;
-  name: string;
-  image: string;
-  price: number;
-  quantity: number;
-  unit: string;
-  description: string;
-  category_id: number;
-  created_at: string;
-  updated_at: string;
-}
-
 const BASE_URL = 'http://localhost:5000/api';
 
 export default function CategoryDetailScreen() {
