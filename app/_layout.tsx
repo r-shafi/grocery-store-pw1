@@ -1,5 +1,7 @@
-import { Link, Slot, usePathname } from 'expo-router';
-import React, { useRef, useState } from 'react';
+import { ROUTES } from '@/constants/routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Link, Slot } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   PanResponder,
@@ -13,12 +15,19 @@ import {
 const DRAWER_WIDTH = 280;
 const SWIPE_THRESHOLD = 50;
 
-import { ROUTES } from '@/constants/routes';
-import { Menu } from 'lucide-react';
-
 export default function RootLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const translateX = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
+
+  useEffect(() => {
+    // Check if the user is authenticated on mount
+    const checkAuthentication = async () => {
+      const token = await AsyncStorage.getItem('jwtToken');
+      setIsAuthenticated(!!token);
+    };
+    checkAuthentication();
+  }, []);
 
   const toggleDrawer = (shouldOpen: boolean) => {
     Animated.timing(translateX, {
@@ -53,6 +62,11 @@ export default function RootLayout() {
     })
   ).current;
 
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('jwtToken');
+    setIsAuthenticated(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -60,7 +74,7 @@ export default function RootLayout() {
           onPress={() => toggleDrawer(true)}
           style={styles.menuButton}
         >
-          <Menu color="black" size={24} />
+          <Text>☰</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Grocery Store</Text>
       </View>
@@ -76,25 +90,38 @@ export default function RootLayout() {
         >
           <View>
             {ROUTES.map((route) => {
-              const isActive = usePathname() === route.path;
-              return (
-                <Link href={route.path} key={route.label}>
-                  <TouchableOpacity
-                    style={[styles.navItem, isActive && styles.navItemActive]}
-                  >
-                    {route.icon}
-                    <Text
-                      style={[
-                        styles.navLabel,
-                        isActive && styles.navLabelActive,
-                      ]}
-                    >
-                      {route.label}
-                    </Text>
-                  </TouchableOpacity>
-                </Link>
-              );
+              if (
+                (!route.protected && !route.hideAuthenticated) ||
+                (route.hideAuthenticated && !isAuthenticated)
+              ) {
+                return (
+                  <Link href={route.path} key={route.label}>
+                    <TouchableOpacity style={styles.navItem}>
+                      {route.icon}
+                      <Text style={styles.navLabel}>{route.label}</Text>
+                    </TouchableOpacity>
+                  </Link>
+                );
+              }
+
+              if (route.protected && isAuthenticated) {
+                return (
+                  <Link href={route.path} key={route.label}>
+                    <TouchableOpacity style={styles.navItem}>
+                      {route.icon}
+                      <Text style={styles.navLabel}>{route.label}</Text>
+                    </TouchableOpacity>
+                  </Link>
+                );
+              }
+
+              return null;
             })}
+            {isAuthenticated && (
+              <TouchableOpacity style={styles.navItem} onPress={handleLogout}>
+                <Text style={styles.navLabel}>Logout</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </Animated.View>
 
@@ -112,7 +139,7 @@ export default function RootLayout() {
       </View>
 
       <View style={styles.footer}>
-        <Text>Footer Content</Text>
+        <Text>Shafi - Mim - Fahi</Text>
       </View>
     </SafeAreaView>
   );
