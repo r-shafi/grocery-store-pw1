@@ -74,9 +74,7 @@ export default function RootLayout() {
             },
           ]}
         >
-          <Text style={styles.drawerTitle}>Navigation</Text>
-
-          <View style={styles.navLinks}>
+          <View>
             {ROUTES.map((route) => {
               const isActive = usePathname() === route.path;
               return (
@@ -189,15 +187,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
   },
-  navLinks: {
-    paddingTop: 16,
-  },
   navItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
+    width: DRAWER_WIDTH,
   },
   navItemActive: {
     backgroundColor: '#f0f0f0',
