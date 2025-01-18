@@ -54,7 +54,10 @@ const Product = ({ product }: { product: ProductInterface }) => {
 
           <View style={styles.priceContainer}>
             <Text style={styles.price}>{formatPrice(product.price)}</Text>
-            <Text style={styles.unit}>/{product.unit}</Text>
+            <Text style={styles.unit}>
+              {product.unit && '/'}
+              {product.unit}
+            </Text>
           </View>
 
           <View
@@ -87,7 +90,7 @@ const Product = ({ product }: { product: ProductInterface }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 200,
+    width: 220,
     marginBottom: 8,
   },
   card: {
@@ -106,13 +109,13 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: 'relative',
     aspectRatio: 1,
-    width: 200,
-    height: 250,
+    width: 220,
+    height: 200,
     backgroundColor: '#f5f5f5',
   },
   image: {
-    width: 200,
-    height: 250,
+    width: 220,
+    height: 200,
     resizeMode: 'cover',
   },
   outOfStockOverlay: {
