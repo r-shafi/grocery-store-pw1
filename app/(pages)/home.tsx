@@ -129,6 +129,9 @@ export default function HomeScreen() {
           style={{
             marginVertical: 16,
           }}
+          contentContainerStyle={{
+            gap: 16,
+          }}
         >
           {PRODUCTS.map((product, i) => (
             <Product key={i} product={product} />
