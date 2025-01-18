@@ -84,11 +84,7 @@ export default function HomeScreen() {
               }}
             >
               <Image
-                source={{
-                  uri:
-                    category.image ||
-                    'https://blocks.astratic.com/img/general-img-portrait.png',
-                }}
+                source={{ uri: category.image }}
                 style={{
                   width: 100,
                   height: 100,

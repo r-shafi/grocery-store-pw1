@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -100,6 +101,13 @@ const ProductPage = () => {
                 </Text>
               </View>
               <Text style={styles.description}>{product.description}</Text>
+              <View style={styles.buttonContainer}></View>
+              <TouchableOpacity style={[styles.button, styles.addToCartButton]}>
+                <Text style={styles.buttonText}>Add to Cart</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.orderButton]}>
+                <Text style={styles.buttonText}>Order Now</Text>
+              </TouchableOpacity>
             </View>
           </View>
         ) : null}
@@ -151,6 +159,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     color: '#333',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  button: {
+    flex: 1,
+    padding: 16,
+    margin: 8,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  addToCartButton: {
+    backgroundColor: '#2E8B57',
+  },
+  orderButton: {
+    backgroundColor: '#FF6347',
   },
 });
 
