@@ -1,3 +1,5 @@
+import { CategoryInterface } from '@/models/categories';
+import { ProductInterface } from '@/models/products';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BASE_URL = 'http://localhost:5000/api';
@@ -42,15 +44,23 @@ const apiService = {
     });
   },
 
-  async fetchCategories() {
+  async fetchOrders() {
+    const token = await getToken();
+    if (!token) throw new Error('Authentication token is missing.');
+    return fetchData(`${BASE_URL}/order/orders`, {
+      headers: { Authorization: `${token}` },
+    });
+  },
+
+  async fetchCategories(): Promise<CategoryInterface[]> {
     return fetchData(`${BASE_URL}/categories`);
   },
 
-  async fetchProducts() {
+  async fetchProducts(): Promise<ProductInterface[]> {
     return fetchData(`${BASE_URL}/products`);
   },
 
-  async fetchProduct(productId: number) {
+  async fetchProduct(productId: number): Promise<ProductInterface> {
     return fetchData(`${BASE_URL}/products/${productId}`);
   },
 
@@ -103,4 +113,4 @@ const apiService = {
   },
 };
 
-export default apiService;
+export { apiService, getToken };
