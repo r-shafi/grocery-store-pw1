@@ -1,3 +1,4 @@
+import { ProductInterface } from '@/models/products';
 import { apiService } from '@/service/API';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, Package, ShoppingCart } from 'lucide-react';
@@ -34,6 +35,11 @@ const ProductDetails = () => {
   useEffect(() => {
     apiService.fetchProduct(Number(productId)).then(setProduct);
   }, [productId]);
+
+  const addToCart = async (product: ProductInterface) => {
+    await apiService.addToCart(product.id, 1);
+    router.push('/cart');
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -81,6 +87,7 @@ const ProductDetails = () => {
                 product.quantity === 0 && styles.disabledButton,
               ]}
               disabled={product.quantity === 0}
+              onPress={() => addToCart(product)}
             >
               <ShoppingCart size={16} color="white" />
               <Text style={styles.buttonText}>Add to Cart</Text>
