@@ -1,5 +1,14 @@
 import { Href } from 'expo-router';
-import { Blocks, Home, User } from 'lucide-react';
+import {
+  Blocks,
+  History,
+  Home,
+  KeyRound,
+  Mail,
+  Search,
+  ShoppingCart,
+  Signature,
+} from 'lucide-react';
 
 type Route = {
   label: string;
@@ -18,16 +27,40 @@ const ROUTES: Route[] = [
     protected: false,
   },
   {
+    label: 'Search',
+    path: '/(pages)/search',
+    icon: <Search size={20} />,
+    protected: false,
+  },
+  {
+    label: 'My Cart',
+    path: '/(pages)/cart',
+    icon: <ShoppingCart size={20} />,
+    protected: true,
+  },
+  {
+    label: 'Order History',
+    path: '/(pages)/history',
+    icon: <History size={20} />,
+    protected: true,
+  },
+  {
+    label: 'Contact Us',
+    path: '/(pages)/contact',
+    icon: <Mail size={20} />,
+    protected: false,
+  },
+  {
     label: 'Login',
     path: '/(pages)/login',
-    icon: <User size={20} />,
+    icon: <KeyRound size={20} />,
     protected: false,
     hideAuthenticated: true,
   },
   {
     label: 'Register',
     path: '/(pages)/register',
-    icon: <User size={20} />,
+    icon: <Signature size={20} />,
     protected: false,
     hideAuthenticated: true,
   },
