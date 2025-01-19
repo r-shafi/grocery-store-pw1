@@ -1,3 +1,4 @@
+import { apiService } from '@/service/API';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -8,8 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
-const BASE_URL = 'http://localhost:5000/api';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -25,15 +24,7 @@ const LoginScreen = () => {
     }
 
     try {
-      const request = await fetch(`${BASE_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const response = await request.json();
+      const response = await apiService.login({ email, password });
 
       if (response.token) {
         await AsyncStorage.setItem('jwtToken', response.token);
@@ -81,10 +72,12 @@ const LoginScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => router.push('/register' as any)}
+        onPress={() => router.push('/register')}
         style={styles.linkContainer}
       >
-        <Text style={styles.linkText}>Don't have an account? Register</Text>
+        <Text style={styles.linkText}>
+          Don&apos;t have an account? Register
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -94,7 +87,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 20,
   },

@@ -1,6 +1,8 @@
 import { ROUTES } from '@/constants/routes';
+import { getToken } from '@/service/API';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link, Slot } from 'expo-router';
+import { CircleUser, LogOut, ShoppingCart } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -21,12 +23,11 @@ export default function RootLayout() {
   const translateX = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
 
   useEffect(() => {
-    // Check if the user is authenticated on mount
-    const checkAuthentication = async () => {
-      const token = await AsyncStorage.getItem('jwtToken');
-      setIsAuthenticated(!!token);
-    };
-    checkAuthentication();
+    getToken().then((token) => {
+      if (token) {
+        setIsAuthenticated(true);
+      }
+    });
   }, []);
 
   const toggleDrawer = (shouldOpen: boolean) => {
@@ -70,13 +71,28 @@ export default function RootLayout() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => toggleDrawer(true)}
-          style={styles.menuButton}
-        >
-          <Text>☰</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Grocery Store</Text>
+        <View style={styles.headerTitle}>
+          <TouchableOpacity
+            onPress={() => toggleDrawer(true)}
+            style={styles.menuButton}
+          >
+            <Text>☰</Text>
+          </TouchableOpacity>
+          <Link href={'/'}>
+            <Text style={styles.headerTitle}>Grocery Store</Text>
+          </Link>
+        </View>
+
+        {isAuthenticated && (
+          <View style={styles.headerRight}>
+            <TouchableOpacity style={styles.cartButton}>
+              <ShoppingCart />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.profileButton}>
+              <CircleUser />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       <View style={styles.content} {...panResponder.panHandlers}>
@@ -119,6 +135,7 @@ export default function RootLayout() {
             })}
             {isAuthenticated && (
               <TouchableOpacity style={styles.navItem} onPress={handleLogout}>
+                <LogOut />
                 <Text style={styles.navLabel}>Logout</Text>
               </TouchableOpacity>
             )}
@@ -154,17 +171,40 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cartButton: {
+    marginRight: 16,
+  },
+  cartText: {
+    fontSize: 16,
+  },
+  cartPrice: {
+    fontSize: 12,
+    color: '#555',
+  },
+  profileButton: {
+    padding: 8,
+  },
+  profileIcon: {
+    fontSize: 20,
   },
   menuButton: {
     padding: 8,
   },
   headerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     fontSize: 18,
     fontWeight: 'bold',
-    marginLeft: 16,
   },
   content: {
     flex: 1,

@@ -1,25 +1,17 @@
 import Product from '@/components/Product';
 import { CategoryInterface } from '@/models/categories';
+import { apiService } from '@/service/API';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-
-const BASE_URL = 'http://localhost:5000/api';
 
 export default function HomeScreen() {
   const [CATEGORIES, setCATEGORIES] = useState<CategoryInterface[]>([]);
   const [PRODUCTS, setPRODUCTS] = useState<ProductInterface[]>([]);
 
   useEffect(() => {
-    fetch(`${BASE_URL}/categories`).then(async (res) => {
-      const categories = await res.json();
-      setCATEGORIES(categories);
-    });
-
-    fetch(`${BASE_URL}/products`).then(async (res) => {
-      const products = await res.json();
-      setPRODUCTS(products);
-    });
+    apiService.fetchCategories().then(setCATEGORIES);
+    apiService.fetchProducts().then(setPRODUCTS);
   }, []);
 
   const handleCategoryPress = (category: CategoryInterface) => {

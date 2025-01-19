@@ -1,3 +1,4 @@
+import { apiService } from '@/service/API';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronLeft, Package, ShoppingCart } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -23,8 +24,6 @@ const getStockStatus = (quantity: number) => {
   return { text: 'In Stock', color: '#4CAF50' };
 };
 
-const BASE_URL = 'http://localhost:5000/api';
-
 const ProductDetails = () => {
   const params = useLocalSearchParams();
   const { productId } = params;
@@ -33,21 +32,7 @@ const ProductDetails = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/products/${productId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setProduct(data);
-        } else {
-          console.error('Error fetching product:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching product:', error);
-      }
-    };
-
-    fetchProduct();
+    apiService.fetchProduct(Number(productId)).then(setProduct);
   }, [productId]);
 
   return (

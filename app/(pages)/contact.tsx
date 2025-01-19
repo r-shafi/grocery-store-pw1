@@ -1,3 +1,4 @@
+import { apiService } from '@/service/API';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -7,8 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
-const BASE_URL = 'http://localhost:5000/api';
 
 const ContactUsScreen = () => {
   const [name, setName] = useState('');
@@ -34,14 +33,12 @@ const ContactUsScreen = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${BASE_URL}/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, subject, message }),
+      const response = await apiService.contactForm({
+        name,
+        email,
+        subject,
+        message,
       });
-
       const result = await response.json();
 
       if (response.ok) {

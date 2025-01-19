@@ -1,4 +1,5 @@
 import { CategoryInterface } from '@/models/categories';
+import { apiService } from '@/service/API';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -11,8 +12,6 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-
-const BASE_URL = 'http://localhost:5000/api';
 
 export default function CategoriesScreen() {
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
@@ -29,10 +28,8 @@ export default function CategoriesScreen() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/categories`);
-      if (!response.ok) throw new Error('Failed to fetch categories');
-      const data = await response.json();
-      setCategories(data);
+      const response = await apiService.fetchCategories();
+      setCategories(response);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

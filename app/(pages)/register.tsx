@@ -1,3 +1,4 @@
+import { apiService } from '@/service/API';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -7,8 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
-const BASE_URL = 'http://localhost:5000/api';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -47,13 +46,7 @@ const RegisterScreen = () => {
     }
 
     try {
-      const request = await fetch(`${BASE_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const response = await request.json();
+      const response = await apiService.register({ name, email, password });
 
       if (response.token) {
         setSuccess('Registration successful! You can now log in.');
