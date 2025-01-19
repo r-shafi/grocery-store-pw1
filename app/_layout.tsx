@@ -1,8 +1,8 @@
 import { ROUTES } from '@/constants/routes';
 import { getToken } from '@/service/API';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Link, Slot } from 'expo-router';
-import { CircleUser, LogOut, ShoppingCart } from 'lucide-react';
+import { Link, Slot, useRouter } from 'expo-router';
+import { LogOut, Search, ShoppingCart } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -21,6 +21,7 @@ export default function RootLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const translateX = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
+  const router = useRouter();
 
   useEffect(() => {
     getToken().then((token) => {
@@ -85,11 +86,17 @@ export default function RootLayout() {
 
         {isAuthenticated && (
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.cartButton}>
+            <TouchableOpacity
+              style={styles.cartButton}
+              onPress={() => router.push('/cart')}
+            >
               <ShoppingCart />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileButton}>
-              <CircleUser />
+            <TouchableOpacity
+              style={styles.profileButton}
+              onPress={() => router.push('/search')}
+            >
+              <Search />
             </TouchableOpacity>
           </View>
         )}
