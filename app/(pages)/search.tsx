@@ -1,7 +1,7 @@
 import Product from '@/components/Product';
 import { ProductInterface } from '@/models/products';
 import { Search, X } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -49,11 +49,16 @@ const SearchPage = () => {
         `${BASE_URL}/search?query=${encodeURIComponent(debouncedQuery)}`
       );
 
-      if (!response.ok) throw new Error('Failed to fetch products');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || `HTTP error! status: ${response.status}`
+        );
+      }
 
       const data = await response.json();
       if (data.success) {
-        setProducts(data.products);
+        setProducts(data.result.products);
       } else {
         throw new Error(data.error || 'Failed to fetch products');
       }
@@ -70,7 +75,6 @@ const SearchPage = () => {
   };
 
   const renderProducts = () => {
-    // Create pairs of products for each row
     const rows = [];
     for (let i = 0; i < products.length; i += 2) {
       const row = (
