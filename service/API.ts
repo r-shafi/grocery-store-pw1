@@ -8,14 +8,25 @@ const getToken = async (): Promise<string | null> => {
   return await AsyncStorage.getItem('jwtToken');
 };
 
+const handleResponse = async (response: Response) => {
+  const data = await response.json();
+  if (!response.ok || !data.success) {
+    const error = data.error || `HTTP error! status: ${response.status}`;
+    alert(error.message || error);
+    throw new Error(error);
+  }
+  return data.result;
+};
+
 const fetchData = async (url: string, options: RequestInit = {}) => {
   try {
     const response = await fetch(url, options);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return await response.json();
-  } catch (error) {
+    return await handleResponse(response);
+  } catch (error: any) {
     console.error('API Error:', error);
-    throw new Error('Something went wrong. Please try again later.');
+    throw new Error(
+      error.message || 'Something went wrong. Please try again later.'
+    );
   }
 };
 
@@ -62,6 +73,19 @@ const apiService = {
 
   async fetchProduct(productId: number): Promise<ProductInterface> {
     return fetchData(`${BASE_URL}/products/${productId}`);
+  },
+
+  async addToCart(productId: number, quantity: number) {
+    const token = await getToken();
+    if (!token) throw new Error('Authentication token is missing.');
+    return fetchData(`${BASE_URL}/order/cart/add`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ product_id: productId, quantity }),
+    });
   },
 
   async updateCart(productId: number, quantity: number) {
