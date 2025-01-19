@@ -1,6 +1,7 @@
 import Product from '@/components/Product';
+import { ProductInterface } from '@/models/products';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -28,7 +29,6 @@ export default function CategoryDetailScreen() {
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${BASE_URL}/products`);
-      if (!response.ok) throw new Error('Failed to fetch products');
       const data: ProductInterface[] = await response.json();
       const categoryProducts = data.filter(
         (product) => product.category_id === Number(id)

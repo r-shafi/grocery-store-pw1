@@ -1,15 +1,9 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ProductInterface } from '@/models/products';
+import { apiService } from '@/service/API';
 import { useRouter } from 'expo-router';
 import { Package, ShoppingCart } from 'lucide-react';
-import React, { useState } from 'react';
-import {
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const formatPrice = (price: number) => {
   return `৳${price.toLocaleString('en-IN', {
@@ -23,8 +17,6 @@ const getStockStatus = (quantity: number) => {
   if (quantity < 5) return { text: 'Low Stock', color: '#FFA500' };
   return { text: 'In Stock', color: '#4CAF50' };
 };
-
-const BASE_URL = 'http://localhost:5000/api';
 
 const Product = ({ product }: { product: ProductInterface }) => {
   const router = useRouter();
@@ -40,41 +32,19 @@ const Product = ({ product }: { product: ProductInterface }) => {
 
   const handleAddToCart = async () => {
     if (product.quantity === 0) {
-      Alert.alert('Out of Stock', 'This product is currently out of stock.');
+      alert('This product is currently out of stock.');
       return;
     }
 
     setLoading(true);
 
-    try {
-      const response = await fetch(`${BASE_URL}/order/cart/add`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${await AsyncStorage.getItem('jwtToken')}`,
-        },
-        body: JSON.stringify({
-          product_id: product.id,
-          quantity: 1,
-        }),
-      });
+    const response = await apiService.addToCart(product.id, 1);
 
-      const result = await response.json();
-
-      if (response.ok) {
-        Alert.alert(
-          'Success',
-          result.message || 'Product added to cart successfully!'
-        );
-      } else {
-        Alert.alert('Error', result.error || 'Failed to add product to cart.');
-      }
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-    } finally {
-      setLoading(false);
+    if (response) {
+      alert(response.message);
     }
+
+    setLoading(false);
   };
 
   return (
