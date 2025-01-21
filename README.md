@@ -1,50 +1,58 @@
-# Welcome to your Expo app 👋
+# Grocery Store Mobile Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![App Features](/assets/cover.png)
 
-## Get started
+## Objective
 
-1. Install dependencies
+The Grocery Store Mobile Application is a user-friendly platform designed to streamline grocery store operations and enhance the customer experience. It provides customers with a convenient way to browse products, manage carts, and place orders.
+
+## Features
+
+- Browse products: Explore a comprehensive product catalog with search functionality.
+- Manage cart: Add, remove, and update items in the shopping cart.
+- Place orders: Submit orders for delivery or pickup.
+
+## Technologies and Choices
+
+- **React Native:** Cross-platform framework for building native-looking mobile apps.
+
+## Installation and Setup
+
+**Prerequisites:**
+
+- Node.js and npm (or yarn) installed on your development machine.
+- A code editor or IDE of your choice (e.g., Visual Studio Code, Android Studio).
+
+**Steps:**
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/r-shafi/grocery-store-pw1.git
+   cd grocery-store-pw1
+   ```
+
+2. **Install Dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. **Configure the Backend API**
+
+   - Ensure your Python Flask server is up and running. (`git clone https://github.com/r-shafi/grocery-store-dbms`)
+   - Update the API base URL in the app's configuration files to point to your backend server.
+
+4. **Run the App**
 
    ```bash
-    npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+   This will launch the development server and open the app in a simulator or connected device.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Developed By
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Rayhan Aziz Chowdhury Shafi
+- Fatematuj Johura Mim
+- Fahima Haque Talukdar
