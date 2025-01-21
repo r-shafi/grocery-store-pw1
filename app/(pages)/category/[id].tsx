@@ -29,9 +29,9 @@ export default function CategoryDetailScreen() {
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${BASE_URL}/products`);
-      const data: ProductInterface[] = await response.json();
-      const categoryProducts = data.filter(
-        (product) => product.category_id === Number(id)
+      const data = await response.json();
+      const categoryProducts = data.result.filter(
+        (product: any) => product.category_id === Number(id)
       );
       setProducts(categoryProducts);
     } catch (err) {
